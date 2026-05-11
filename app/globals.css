@@ -48,6 +48,11 @@
   }
 } */
 
+
+p,li{
+  font-size: 16px !important;
+}
+
 .template-minimal {
   background-color: black;
   color: white;
