@@ -24,7 +24,7 @@ import Faqs from "@/app/components/Faqs";
 import Reviews from "@/app/components/Reviews";
 import StoreLocation from "@/app/components/StoreLocation";
 import LocationInfo from "@/app/components/LocationInfo";
-import { getLocationBySlug } from "@/lib/getLocations";
+import { getLocationBySlug, getLocations } from "@/lib/getLocations"; // ✅ added getLocations
 import { getPaintBySlug } from "@/lib/getPaint";
 import { getGlassBySlug } from "@/lib/getGlass";
 import { getDoorsBySlug } from "@/lib/getDoors";
@@ -39,8 +39,6 @@ import Cta from "@/app/components/Cta";
 import RecommendBlog from "@/app/components/RecommendBlogs";
 import BlogSearch from "@/app/components/Blogsearch";
 import BlogDetail from "@/app/components/Blogdetail";
-
-
 
 export const dynamic = "force-dynamic";
 
@@ -66,18 +64,32 @@ const blockMap: Record<string, React.ComponentType<any>> = {
   reviews: Reviews,
   storeLocation: StoreLocation,
   locationInfo: LocationInfo,
-  featureList:FeatureList,
-  featuredBrand:FeaturedBrand,
-  featureCards:FeatureCards,
-  exteriorServices:ExteriorServices,
-  brands:Brands,
-  subHero:SubHero,
+  featureList: FeatureList,
+  featuredBrand: FeaturedBrand,
+  featureCards: FeatureCards,
+  exteriorServices: ExteriorServices,
+  brands: Brands,
+  subHero: SubHero,
   cta: Cta,
-  recommendBlog:RecommendBlog,
+  recommendBlog: RecommendBlog,
   blogSearch: BlogSearch,
   blogDetail: BlogDetail,
-
 };
+
+// ✅ Helper to render blocks with extra props where needed
+function renderBlocks(blocks: any[], allLocations: any[]) {
+  return blocks.map((block: any, i: number) => {
+    const Component = blockMap[block.blockType];
+    if (!Component) return null;
+
+    // ✅ Pass fetched locations to ImageSlider
+    const extraProps = block.blockType === 'imageSlider'
+      ? { fetchedLocations: allLocations }
+      : {}
+
+    return <Component key={i} {...block} {...extraProps} />;
+  })
+}
 
 export default async function DynamicPage({
   params,
@@ -87,13 +99,15 @@ export default async function DynamicPage({
   const navData = await getNavigation();
   const { slug: rawSlug } = await params;
 
-  // ✅ Normalize slug — decode URI encoding, strip slashes, lowercase
   const slug = decodeURIComponent(rawSlug)
     .replace(/^\/+/, '')
     .toLowerCase()
     .trim()
 
   console.log('DynamicPage → slug:', slug)
+
+  // ✅ Fetch locations once for ImageSlider
+  const allLocations = await getLocations()
 
   const payload = await getPayload({ config });
 
@@ -114,11 +128,7 @@ export default async function DynamicPage({
       return (
         <>
           <Navbar navData={navData} />
-          {(location.blocks ?? []).map((block: any, i: number) => {
-            const Component = blockMap[block.blockType];
-            if (!Component) return null;
-            return <Component key={i} {...block} />;
-          })}
+          {renderBlocks(location.blocks ?? [], allLocations)}
           <Footer />
         </>
       );
@@ -130,11 +140,7 @@ export default async function DynamicPage({
       return (
         <>
           <Navbar navData={navData} />
-          {(paintItem.blocks ?? []).map((block: any, i: number) => {
-            const Component = blockMap[block.blockType];
-            if (!Component) return null;
-            return <Component key={i} {...block} />;
-          })}
+          {renderBlocks(paintItem.blocks ?? [], allLocations)}
           <Footer />
         </>
       );
@@ -146,11 +152,7 @@ export default async function DynamicPage({
       return (
         <>
           <Navbar navData={navData} />
-          {(glassItem.blocks ?? []).map((block: any, i: number) => {
-            const Component = blockMap[block.blockType];
-            if (!Component) return null;
-            return <Component key={i} {...block} />;
-          })}
+          {renderBlocks(glassItem.blocks ?? [], allLocations)}
           <Footer />
         </>
       );
@@ -162,11 +164,7 @@ export default async function DynamicPage({
       return (
         <>
           <Navbar navData={navData} />
-          {(doorsItem.blocks ?? []).map((block: any, i: number) => {
-            const Component = blockMap[block.blockType];
-            if (!Component) return null;
-            return <Component key={i} {...block} />;
-          })}
+          {renderBlocks(doorsItem.blocks ?? [], allLocations)}
           <Footer />
         </>
       );
@@ -176,15 +174,11 @@ export default async function DynamicPage({
     return notFound();
   }
 
-  // ── Render normal Page with its blocks
+  // ── Render normal Page
   return (
     <>
       <Navbar navData={navData} />
-      {(page.blocks ?? []).map((block: any, i: number) => {
-        const Component = blockMap[block.blockType];
-        if (!Component) return null;
-        return <Component key={i} {...block} />;
-      })}
+      {renderBlocks(page.blocks ?? [], allLocations)}
       <Footer />
     </>
   );
