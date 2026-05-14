@@ -12,35 +12,33 @@ import 'swiper/css/navigation';
 type Location = {
   id?: string
   name: string
-  image?: {
+  slug?: string
+  storeImage?: {
     url?: string | null
     alt?: string | null
   } | null
-  storeInfoLink: string
 }
 
 type ImageSliderBlockProps = {
   heading?: string
   description?: string
-  locations?: Location[]
+  // ✅ locations passed from server component
+  fetchedLocations?: Location[]
 }
 
 export default function ImageSlider({
   heading = 'JP&G Locations',
   description = 'We have stores scattered throughout Utah. Check out the products and information for the store nearest you!',
-  locations = [],
+  fetchedLocations = [],
 }: ImageSliderBlockProps) {
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
   const swiperRef = useRef<SwiperType | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-
-  // Reset Swiper when locations change
   useEffect(() => {
-    if (locations.length > 0) {
+    if (fetchedLocations.length > 0) {
       setIsLoading(true);
-      // Give swiper time to reinitialize
       const timer = setTimeout(() => {
         if (swiperRef.current) {
           swiperRef.current.update();
@@ -49,7 +47,7 @@ export default function ImageSlider({
       }, 100);
       return () => clearTimeout(timer);
     }
-  }, [locations.length]);
+  }, [fetchedLocations.length]);
 
   const handleBeforeInit = (swiper: SwiperType) => {
     swiperRef.current = swiper;
@@ -61,8 +59,6 @@ export default function ImageSlider({
 
   return (
     <section className="mt-[-100px] pr-[10%] pt-40 pb-20 overflow-hidden bg-gradient-to-b from-[#0052C6] to-[#002559]" id='jp-slider'>
-
-      {/* GRID CONTAINER */}
       <div className="grid grid-cols-12 items-end bg-white py-10 rounded-r-3xl gap-6">
 
         {/* LEFT SIDE */}
@@ -70,29 +66,22 @@ export default function ImageSlider({
           <h2 className="text-[28px] md:text-[34px] lg:text-[40px] font-bold text-black mb-4 leading-tight font-['Avenir']">
             {heading}
           </h2>
-
           <p className="text-[16px] text-gray-500 leading-relaxed mb-8 lg:pr-[20%] font-['Avenir']">
             {description}
           </p>
-
           <div className="flex gap-3">
-            {/* PREV BUTTON */}
             <button
               ref={prevRef}
-              className="w-11 h-11 rounded-full bg-[#D9FDED] hover:bg-[#A5EBCD]
-                         flex items-center justify-center transition-colors cursor-pointer"
+              className="w-11 h-11 rounded-full bg-[#D9FDED] hover:bg-[#A5EBCD] flex items-center justify-center transition-colors cursor-pointer"
               aria-label="Previous slide"
             >
               <svg className="w-8 h-8 stroke-black fill-none" strokeWidth={1.2} viewBox="0 0 24 24">
                 <polyline points="15 18 9 12 15 6" />
               </svg>
             </button>
-
-            {/* NEXT BUTTON */}
             <button
               ref={nextRef}
-              className="w-11 h-11 rounded-full bg-[#D9FDED] hover:bg-[#A5EBCD]
-                         flex items-center justify-center transition-colors cursor-pointer"
+              className="w-11 h-11 rounded-full bg-[#D9FDED] hover:bg-[#A5EBCD] flex items-center justify-center transition-colors cursor-pointer"
               aria-label="Next slide"
             >
               <svg className="w-8 h-8 stroke-black fill-none" strokeWidth={1.2} viewBox="0 0 24 24">
@@ -102,16 +91,16 @@ export default function ImageSlider({
           </div>
         </div>
 
-        {/* RIGHT SIDE (SWIPER) */}
+        {/* RIGHT SIDE — SWIPER */}
         <div className="col-span-12 lg:col-span-7 overflow-hidden">
           {isLoading ? (
             <div className="flex items-center justify-center h-[420px] bg-gray-100 rounded-xl">
               <div className="animate-pulse text-gray-400">Loading locations...</div>
             </div>
-          ) : (
+          ) : fetchedLocations.length > 0 ? (
             <Swiper
               modules={[Navigation, Autoplay]}
-              loop={locations.length > 1}
+              loop={fetchedLocations.length > 1}
               onBeforeInit={handleBeforeInit}
               slidesPerView={1.1}
               spaceBetween={16}
@@ -122,60 +111,53 @@ export default function ImageSlider({
                 1200: { slidesPerView: 2.5 },
                 1400: { slidesPerView: 3 },
               }}
-              autoplay={
-                locations.length > 1
-                  ? {
-                      delay: 2500,
-                      disableOnInteraction: false,
-                    }
-                  : false
+              autoplay={fetchedLocations.length > 1
+                ? { delay: 2500, disableOnInteraction: false }
+                : false
               }
             >
-              {locations.map((loc, index) => {
-                const imageUrl = loc.image?.url?.trim()
-                  ? loc.image.url
-                  : '/assets/jt/default.jpg';
+              {fetchedLocations.map((loc, index) => {
+                const imageUrl = loc.storeImage?.url?.trim()
+                  ? loc.storeImage.url
+                  : '/assets/jt/default.jpg'
 
                 return (
-                  
-                <SwiperSlide key={loc.id || index}>
-                  <div className="relative rounded-xl overflow-hidden border border-gray-100 bg-white">
-
-                    {/* IMAGE */}
-                    <div className="relative w-full h-[350px] md:h-[380px] lg:h-[420px]">
-                      <Image
-                        src={imageUrl && imageUrl.trim() !== '' ? imageUrl : '/assets/jt/location-1.png'}
-                        alt={loc.image?.alt || loc.name}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover"
-                        loading="lazy"
-                        quality={75}
-                      />
-                      
+                  <SwiperSlide key={loc.id || index}>
+                    <div className="relative rounded-xl overflow-hidden border border-gray-100 bg-white">
+                      <div className="relative w-full h-[350px] md:h-[380px] lg:h-[420px]">
+                        <Image
+                          src={imageUrl}
+                          alt={loc.storeImage?.alt || loc.name}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-cover"
+                          loading="lazy"
+                          quality={75}
+                        />
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 bg-white/95 rounded-xl px-5 py-4 w-[90%] mx-auto mb-4 shadow-sm">
+                        <h3 className="font-bold text-gray-900 text-[20px] mb-1">
+                          {loc.name}
+                        </h3>
+                        
+                        <a  href={`/${loc.slug}`}
+                          className="text-[16px] text-gray-500 hover:text-gray-700 transition-colors"
+                        >
+                          Store Info
+                        </a>
+                      </div>
                     </div>
-
-                    {/* FOOTER */}
-                    <div className="absolute bottom-0 left-0 right-0 bg-white/95 rounded-xl px-5 py-4 w-[90%] mx-auto mb-4 shadow-sm">
-                      <h3 className="font-bold text-gray-900 text-[20px] mb-1">
-                        {loc.name}
-                      </h3>
-                      <a
-                        href={loc.storeInfoLink}
-                        className="text-[16px] text-gray-500 hover:text-gray-700 transition-colors"
-                      >
-                        Store Info
-                      </a>
-                    </div>
-
-                  </div>
-                </SwiperSlide>
-              )})}
+                  </SwiperSlide>
+                )
+              })}
             </Swiper>
+          ) : (
+            <div className="flex items-center justify-center h-[420px] bg-gray-100 rounded-xl">
+              <p className="text-gray-400">No locations added yet.</p>
+            </div>
           )}
         </div>
-
       </div>
     </section>
-  );
+  )
 }
