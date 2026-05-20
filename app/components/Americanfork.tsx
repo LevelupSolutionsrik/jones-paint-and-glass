@@ -2,10 +2,34 @@
 import Image from "next/image";
 
 const services = [
-    { id: 1, title: "Glass", image: "/assets/jt/win-glass.png", href: "#" },
-    { id: 2, title: "Doors", image: "/assets/jt/door.png", href: "#" },
-    { id: 3, title: "Paint", image: "/assets/jt/paint.png", href: "#" },
-    { id: 4, title: "Stains & Finishes", image: "/assets/jt/finishes.png", href: "#" },
+    {
+        id: 1,
+        title: "Windows",
+        image: "/assets/jt/win-glass.png",
+        href: "#",
+        buttonText: "Explore Window Options",
+    },
+    {
+        id: 2,
+        title: "Doors",
+        image: "/assets/jt/door.png",
+        href: "#",
+        buttonText: "Shop Interior & Exterior Doors",
+    },
+    {
+        id: 3,
+        title: "Paint",
+        image: "/assets/jt/paint.png",
+        href: "#",
+        buttonText: "View Paint Products",
+    },
+    {
+        id: 4,
+        title: "Bathroom Glass & Mirrors",
+        image: "/assets/jt/finishes.png",
+        href: "#",
+        buttonText: "View Shower Glass Inspiration",
+    },
 ];
 
 function ServiceCard({ service }: { service: typeof services[0] }) {
@@ -27,9 +51,20 @@ function ServiceCard({ service }: { service: typeof services[0] }) {
                     href={service.href}
                     className="inline-flex items-center gap-1 text-[16px] font-medium hover:text-[#0052C6] transition-colors group"
                 >
-                    Learn More
-                    <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24" fill="none">
-                        <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    {service.buttonText}
+
+                    <svg
+                        className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                    >
+                        <path
+                            d="M5 12h14M13 6l6 6-6 6"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
                     </svg>
                 </a>
             </div>
@@ -51,7 +86,7 @@ export default function Americanfork() {
                         American Fork
                     </h1>
                     <div className="flex items-center justify-center gap-3   font-normal text-[18px] md:text-[24px]">
-                        <img src="/assets/jt/location-icon.png" className="w-5 h-6"/>
+                        <img src="/assets/jt/location-icon.png" className="w-5 h-6" />
                         65 South 500 East American Fork, UT 84003
                     </div>
                 </div>
@@ -71,8 +106,8 @@ export default function Americanfork() {
                                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3039.5209345680896!2d-111.78742282357398!3d40.37514565816843!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x874d815d66e9357f%3A0xb18f524b9c4515c6!2s65%20S%20500%20E%20St%2C%20American%20Fork%2C%20UT%2084003%2C%20USA!5e0!3m2!1sen!2s!4v1777277265025!5m2!1sen!2s"
                                 width="100%"
                                 height="100%"
-                                style={{ border: 0}} 
-                                allowFullScreen 
+                                style={{ border: 0 }}
+                                allowFullScreen
                                 loading="lazy"
                                 referrerPolicy="no-referrer-when-downgrade"
                             />
