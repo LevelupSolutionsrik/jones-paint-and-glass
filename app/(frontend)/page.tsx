@@ -20,15 +20,12 @@ import Features from "@/app/components/Features";
 import Aboutlocation from "@/app/components/Aboutlocation"
 import QuickLinks from "@/app/components/QuickLinks"
 import Faqs from '@/app/components/Faqs'
-import faqTipsSlider from "@/app/components/FaqTipsSlider";
+import FaqTipsSlider from "@/app/components/FaqTipsSlider";
 import FeatureCards from "@/app/components/FeatureCards";
 import RecommendBlog from "@/app/components/RecommendBlogs";
 import BlogSearch from "@/app/components/Blogsearch";
 import BlogDetail from "@/app/components/Blogdetail";
-
-
-
-
+import { getLocations } from "@/lib/getLocations"; // ✅ added
 
 export const dynamic = 'force-dynamic';
 
@@ -37,9 +34,9 @@ const blockMap: Record<string, React.ComponentType<any>> = {
   diySlider: DiySlider,
   productServices: ProductServices,
   imageSlider: ImageSlider,
-  contractor:Contractor,
+  contractor: Contractor,
   diySupportBlog: DiySupportBlog,
-  jpgMedia:JpgMedia,
+  jpgMedia: JpgMedia,
   videoSlider: VideoSlider,
   diyHero: Diyhero,
   quote: Quote,
@@ -50,49 +47,61 @@ const blockMap: Record<string, React.ComponentType<any>> = {
   aboutLocation: Aboutlocation,
   quickLinks: QuickLinks,
   faqs: Faqs,
-  faqTipsSlider: faqTipsSlider,
+  faqTipsSlider: FaqTipsSlider,
   featureCards: FeatureCards,
-  recommendBlog:RecommendBlog,
+  recommendBlog: RecommendBlog,
   blogDetail: BlogDetail,
   blogSearch: BlogSearch,
 };
 
+// ✅ Same renderBlocks helper as [slug]/page.tsx
+function renderBlocks(blocks: any[], allLocations: any[]) {
+  return blocks.map((block: any, i: number) => {
+    if (!block || !block.blockType) return null;
+    const Component = blockMap[block.blockType];
+    if (!Component) return null;
+
+    const extraProps = block.blockType === 'imageSlider'
+      ? { fetchedLocations: allLocations }
+      : {}
+
+    return <Component key={i} {...block} {...extraProps} />;
+  })
+}
+
 export default async function Home() {
   const navData = await getNavigation();
+  const allLocations = await getLocations(); // ✅ fetch locations
 
   const payload = await getPayload({ config });
 
-  // Query for home page (slug: "home")
   const { docs } = await (payload as any).find({
     collection: "pages",
     where: { slug: { equals: "home" } },
-    depth: 2,
+    depth: 3, // ✅ increased to 3
     limit: 1,
   });
 
   const page = docs[0];
 
-  // If no home page created in Payload, show fallback
   if (!page) {
     return (
       <>
         <Navbar navData={navData} />
-
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-4">No Home Page Found</h1>
             <p className="text-gray-600 mb-6">
               Create a page with slug "home" in Payload CMS admin
             </p>
-            <a
-              href={`${process.env.NEXT_PUBLIC_SERVER_URL}/admin`}
+            
+             <a href={`${process.env.NEXT_PUBLIC_SERVER_URL}/admin`}
               className="inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700"
             >
               Go to Payload Admin
             </a>
           </div>
         </div>
-       
         <Footer />
       </>
     );
@@ -100,17 +109,8 @@ export default async function Home() {
 
   return (
     <>
-      <Navbar navData={navData} />      
-      {/* Render blocks from Payload */}
-      {(page.blocks ?? []).map((block: any, i: number) => {
-        if (!block || !block.blockType) return null;
-        const Component = blockMap[block.blockType];
-        if (!Component) return null;
-        return <Component key={i} {...block} />;
-      })}
-
-      
-
+      <Navbar navData={navData} />
+      {renderBlocks(page.blocks ?? [], allLocations)} {/* ✅ updated */}
       <Footer />
     </>
   );
