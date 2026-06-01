@@ -73,9 +73,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const page = docs[0];
 
-  const metaTitle = page?.seo?.metaTitle || page?.title || "Jones Paint & Glass";
+  const metaTitle =
+    page?.metaTitle || page?.title || "Jones Paint & Glass";
+
   const metaDescription =
-    page?.seo?.metaDescription ||
+    page?.metaDescription ||
     "Jones Paint & Glass has been Utah's trusted window, glass, door, and paint expert for over 85 years.";
 
   const canonical = `${SITE_URL}/`;
@@ -83,18 +85,15 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: metaTitle,
     description: metaDescription,
-
     alternates: {
       canonical,
     },
-
     openGraph: {
       title: metaTitle,
       description: metaDescription,
       url: canonical,
       type: "website",
     },
-
     twitter: {
       card: "summary_large_image",
       title: metaTitle,
