@@ -14,6 +14,7 @@ import Paint from './collections/Paint'
 import Glass from './collections/Glass'
 import Doors from './collections/Doors'
 import Blogs from './collections/Blogs'
+import Footer from './collections/Footer'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -56,9 +57,9 @@ export default buildConfig({
     Blogs,
   ],
 
-  // ✅ Navigation moved here as a global
   globals: [
     Navigation,
+    Footer,
   ],
 
   plugins: [
