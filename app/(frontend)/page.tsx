@@ -7,8 +7,8 @@ import ProductServices from "@/app/components/Productservices";
 import ImageSlider from "@/app/components/ImageSlider";
 import Contractor from "@/app/components/Contractor";
 import Navbar from "@/app/components/Navbar";
-import Footer from "@/app/components/Footer";
 import { getNavigation } from "@/lib/getNavigation";
+import { getFooter } from '@/lib/getFooter'
 import DiySupportBlog from "@/app/components/DiySupportBlog";
 import JpgMedia from "@/app/components/Jpgmedia";
 import VideoSlider from "@/app/components/VideoSlider";
@@ -27,6 +27,7 @@ import RecommendBlog from "@/app/components/RecommendBlogs";
 import BlogSearch from "@/app/components/Blogsearch";
 import BlogDetail from "@/app/components/Blogdetail";
 import { getLocations } from "@/lib/getLocations";
+import Footer from "../components/Footer";
 
 export const dynamic = "force-dynamic";
 
@@ -120,6 +121,9 @@ function renderBlocks(blocks: any[], allLocations: any[]) {
 
 export default async function Home() {
   const navData = await getNavigation();
+  const footerData = await getFooter();
+
+
   const allLocations = await getLocations();
 
   const payload = await getPayload({ config });
@@ -156,7 +160,7 @@ export default async function Home() {
             </a>
           </div>
         </div>
-        <Footer />
+        <Footer footerData={footerData} />
       </>
     );
   }
@@ -165,7 +169,7 @@ export default async function Home() {
     <>
       <Navbar navData={navData} />
       {renderBlocks(page.blocks ?? [], allLocations)}
-      <Footer />
+      <Footer footerData={footerData} />
     </>
   );
 }
