@@ -16,6 +16,12 @@ export const metadata: Metadata = {
   description:
     "Jones Paint & Glass has been Utah's trusted window, glass, door, and paint expert for over 85 years.",
 
+  icons: {
+    icon: "/assets/images/logo.png",
+    shortcut: "/assets/images/logo.png",
+    apple: "/assets/images/logo.png",
+  },
+
   openGraph: {
     siteName: "Jones Paint & Glass",
     type: "website",
