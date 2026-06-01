@@ -132,13 +132,13 @@ export async function generateMetadata({
   }
 
   const metaTitle =
-    page?.seo?.metaTitle ||
+    page?.metaTitle ||
     page?.title ||
     page?.name ||
     "Jones Paint & Glass";
 
   const metaDescription =
-    page?.seo?.metaDescription ||
+    page?.metaDescription ||
     "Jones Paint & Glass has been Utah's trusted window, glass, door, and paint expert for over 85 years.";
 
   const canonical = buildCanonical(slug);
