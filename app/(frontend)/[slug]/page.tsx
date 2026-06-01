@@ -6,6 +6,7 @@ import Hero from "@/app/components/Hero";
 import DiySlider from "@/app/components/Diyslider";
 import Navbar from "@/app/components/Navbar";
 import { getNavigation } from "@/lib/getNavigation";
+import { getFooter } from '@/lib/getFooter'
 import Footer from "@/app/components/Footer";
 import ProductServices from "@/app/components/Productservices";
 import ImageSlider from "@/app/components/ImageSlider";
@@ -185,6 +186,7 @@ export default async function DynamicPage({
   params: Promise<{ slug: string }>;
 }) {
   const navData = await getNavigation();
+  const footerData = await getFooter();
   const { slug: rawSlug } = await params;
   const slug = normalizeSlug(rawSlug);
 
@@ -210,7 +212,7 @@ export default async function DynamicPage({
       <>
         <Navbar navData={navData} />
         {renderBlocks(page.blocks ?? [], allLocations)}
-        <Footer />
+        <Footer footerData={footerData} />
       </>
     );
   }
@@ -222,7 +224,7 @@ export default async function DynamicPage({
       <>
         <Navbar navData={navData} />
         {renderBlocks(location.blocks ?? [], allLocations)}
-        <Footer />
+        <Footer footerData={footerData} />
       </>
     );
   }
@@ -234,7 +236,7 @@ export default async function DynamicPage({
       <>
         <Navbar navData={navData} />
         {renderBlocks(paintItem.blocks ?? [], allLocations)}
-        <Footer />
+        <Footer footerData={footerData} />
       </>
     );
   }
@@ -246,7 +248,7 @@ export default async function DynamicPage({
       <>
         <Navbar navData={navData} />
         {renderBlocks(glassItem.blocks ?? [], allLocations)}
-        <Footer />
+        <Footer footerData={footerData} />
       </>
     );
   }
@@ -258,7 +260,7 @@ export default async function DynamicPage({
       <>
         <Navbar navData={navData} />
         {renderBlocks(doorsItem.blocks ?? [], allLocations)}
-        <Footer />
+        <Footer footerData={footerData} />
       </>
     );
   }
