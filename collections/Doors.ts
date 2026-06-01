@@ -40,6 +40,17 @@ const Doors: CollectionConfig = {
         description: 'e.g. "vernal" → /locations/vernal',
       },
     },
+
+    {
+      name: 'metaTitle',
+      type: 'text',
+      label: 'Meta Title',
+    },
+    {
+      name: 'metaDescription',
+      type: 'textarea',
+      label: 'Meta Description',
+    },
    
     
     {

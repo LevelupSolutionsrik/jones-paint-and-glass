@@ -43,6 +43,17 @@ const Paint: CollectionConfig = {
     },
 
     {
+      name: 'metaTitle',
+      type: 'text',
+      label: 'Meta Title',
+    },
+    {
+      name: 'metaDescription',
+      type: 'textarea',
+      label: 'Meta Description',
+    },
+
+    {
       name: 'blocks',
       type: 'blocks',
       label: 'Page Blocks',
