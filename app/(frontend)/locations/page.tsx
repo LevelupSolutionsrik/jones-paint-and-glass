@@ -1,5 +1,6 @@
 import { getLocations } from "@/lib/getLocations";
 import { getNavigation } from "@/lib/getNavigation";
+import { getFooter } from '@/lib/getFooter'
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import Image from "next/image";
@@ -10,6 +11,7 @@ export const dynamic = 'force-dynamic';
 export default async function LocationsPage() {
   const navData = await getNavigation();
   const locations = await getLocations();
+  const footerData = await getFooter();
 
   return (
     <>
@@ -105,7 +107,8 @@ export default async function LocationsPage() {
         </div>
       </section>
 
-      <Footer />
+      <Footer footerData={footerData} />
+      
     </>
   )
 }

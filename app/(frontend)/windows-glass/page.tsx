@@ -1,5 +1,6 @@
 import { getGlass } from "@/lib/getGlass";
 import { getNavigation } from "@/lib/getNavigation";
+import { getFooter } from '@/lib/getFooter'
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import Image from "next/image";
@@ -10,6 +11,7 @@ export const dynamic = 'force-dynamic';
 export default async function GlassPage() {
   const navData = await getNavigation();
   const glassItems = await getGlass();
+  const footerData = await getFooter();
 
   return (
     <>
@@ -98,7 +100,8 @@ export default async function GlassPage() {
         </div>
       </section>
 
-      <Footer />
+      <Footer footerData={footerData} />
+      
     </>
   );
 }
