@@ -6,8 +6,33 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Paint",
-  description: "Paint company",
+  metadataBase: new URL("https://jonespg.com"),
+
+  title: {
+    default: "Jones Paint & Glass",
+    template: "%s | Jones Paint & Glass",
+  },
+
+  description:
+    "Jones Paint & Glass has been Utah's trusted window, glass, door, and paint expert for over 85 years.",
+
+  openGraph: {
+    siteName: "Jones Paint & Glass",
+    type: "website",
+    images: [
+      {
+        url: "/og-default.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Jones Paint & Glass",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og-default.jpg"],
+  },
 };
 
 export default function FrontendLayout({ children }: { children: React.ReactNode }) {

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getPayload } from "payload";
 import config from "@/payload.config";
 import { notFound } from "next/navigation";
@@ -24,7 +25,7 @@ import Faqs from "@/app/components/Faqs";
 import Reviews from "@/app/components/Reviews";
 import StoreLocation from "@/app/components/StoreLocation";
 import LocationInfo from "@/app/components/LocationInfo";
-import { getLocationBySlug, getLocations } from "@/lib/getLocations"; // ✅ added getLocations
+import { getLocationBySlug, getLocations } from "@/lib/getLocations";
 import { getPaintBySlug } from "@/lib/getPaint";
 import { getGlassBySlug } from "@/lib/getGlass";
 import { getDoorsBySlug } from "@/lib/getDoors";
@@ -41,6 +42,8 @@ import BlogSearch from "@/app/components/Blogsearch";
 import BlogDetail from "@/app/components/Blogdetail";
 
 export const dynamic = "force-dynamic";
+
+const SITE_URL = "https://jonespg.com";
 
 const blockMap: Record<string, React.ComponentType<any>> = {
   hero: Hero,
@@ -76,19 +79,104 @@ const blockMap: Record<string, React.ComponentType<any>> = {
   blogDetail: BlogDetail,
 };
 
-// ✅ Helper to render blocks with extra props where needed
+function normalizeSlug(rawSlug: string) {
+  return decodeURIComponent(rawSlug)
+    .replace(/^\/+/, "")
+    .toLowerCase()
+    .trim();
+}
+
+function buildCanonical(slug: string) {
+  return `${SITE_URL}/${slug}`;
+}
+
+async function getContentBySlug(slug: string) {
+  const payload = await getPayload({ config });
+
+  const collections = ["pages", "locations", "paint", "glass", "doors"];
+
+  for (const collection of collections) {
+    const { docs } = await (payload as any).find({
+      collection,
+      where: {
+        slug: {
+          equals: slug,
+        },
+      },
+      depth: 1,
+      limit: 1,
+    });
+
+    if (docs?.[0]) {
+      return docs[0];
+    }
+  }
+
+  return null;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug: rawSlug } = await params;
+  const slug = normalizeSlug(rawSlug);
+
+  const page = await getContentBySlug(slug);
+
+  if (!page) {
+    return {
+      title: "Page Not Found",
+    };
+  }
+
+  const metaTitle =
+    page?.seo?.metaTitle ||
+    page?.title ||
+    page?.name ||
+    "Jones Paint & Glass";
+
+  const metaDescription =
+    page?.seo?.metaDescription ||
+    "Jones Paint & Glass has been Utah's trusted window, glass, door, and paint expert for over 85 years.";
+
+  const canonical = buildCanonical(slug);
+
+  return {
+    title: metaTitle,
+    description: metaDescription,
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      title: metaTitle,
+      description: metaDescription,
+      url: canonical,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: metaTitle,
+      description: metaDescription,
+    },
+  };
+}
+
 function renderBlocks(blocks: any[], allLocations: any[]) {
   return blocks.map((block: any, i: number) => {
+    if (!block || !block.blockType) return null;
+
     const Component = blockMap[block.blockType];
     if (!Component) return null;
 
-    // ✅ Pass fetched locations to ImageSlider
-    const extraProps = block.blockType === 'imageSlider'
-      ? { fetchedLocations: allLocations }
-      : {}
+    const extraProps =
+      block.blockType === "imageSlider"
+        ? { fetchedLocations: allLocations }
+        : {};
 
     return <Component key={i} {...block} {...extraProps} />;
-  })
+  });
 }
 
 export default async function DynamicPage({
@@ -98,88 +186,82 @@ export default async function DynamicPage({
 }) {
   const navData = await getNavigation();
   const { slug: rawSlug } = await params;
+  const slug = normalizeSlug(rawSlug);
 
-  const slug = decodeURIComponent(rawSlug)
-    .replace(/^\/+/, '')
-    .toLowerCase()
-    .trim()
-
-  console.log('DynamicPage → slug:', slug)
-
-  // ✅ Fetch locations once for ImageSlider
-  const allLocations = await getLocations()
+  const allLocations = await getLocations();
 
   const payload = await getPayload({ config });
 
-  // ── 1. Check Pages collection first
   const { docs } = await (payload as any).find({
     collection: "pages",
-    where: { slug: { equals: slug } },
+    where: {
+      slug: {
+        equals: slug,
+      },
+    },
     depth: 3,
     limit: 1,
   });
 
   const page = docs[0];
 
-  if (!page) {
-    // ── 2. Check Locations
-    const location = await getLocationBySlug(slug);
-    if (location) {
-      return (
-        <>
-          <Navbar navData={navData} />
-          {renderBlocks(location.blocks ?? [], allLocations)}
-          <Footer />
-        </>
-      );
-    }
-
-    // ── 3. Check Paint
-    const paintItem = await getPaintBySlug(slug);
-    if (paintItem) {
-      return (
-        <>
-          <Navbar navData={navData} />
-          {renderBlocks(paintItem.blocks ?? [], allLocations)}
-          <Footer />
-        </>
-      );
-    }
-
-    // ── 4. Check Glass
-    const glassItem = await getGlassBySlug(slug);
-    if (glassItem) {
-      return (
-        <>
-          <Navbar navData={navData} />
-          {renderBlocks(glassItem.blocks ?? [], allLocations)}
-          <Footer />
-        </>
-      );
-    }
-
-    // ── 5. Check Doors
-    const doorsItem = await getDoorsBySlug(slug);
-    if (doorsItem) {
-      return (
-        <>
-          <Navbar navData={navData} />
-          {renderBlocks(doorsItem.blocks ?? [], allLocations)}
-          <Footer />
-        </>
-      );
-    }
-
-    // ── 6. Nothing found → 404
-    return notFound();
+  if (page) {
+    return (
+      <>
+        <Navbar navData={navData} />
+        {renderBlocks(page.blocks ?? [], allLocations)}
+        <Footer />
+      </>
+    );
   }
 
-  // ── Render normal Page
-  return (
-    <>
-      <Navbar navData={navData} />
-      {renderBlocks(page.blocks ?? [], allLocations)}
-      <Footer />
-    </>
-  );
+  const location = await getLocationBySlug(slug);
+
+  if (location) {
+    return (
+      <>
+        <Navbar navData={navData} />
+        {renderBlocks(location.blocks ?? [], allLocations)}
+        <Footer />
+      </>
+    );
+  }
+
+  const paintItem = await getPaintBySlug(slug);
+
+  if (paintItem) {
+    return (
+      <>
+        <Navbar navData={navData} />
+        {renderBlocks(paintItem.blocks ?? [], allLocations)}
+        <Footer />
+      </>
+    );
+  }
+
+  const glassItem = await getGlassBySlug(slug);
+
+  if (glassItem) {
+    return (
+      <>
+        <Navbar navData={navData} />
+        {renderBlocks(glassItem.blocks ?? [], allLocations)}
+        <Footer />
+      </>
+    );
+  }
+
+  const doorsItem = await getDoorsBySlug(slug);
+
+  if (doorsItem) {
+    return (
+      <>
+        <Navbar navData={navData} />
+        {renderBlocks(doorsItem.blocks ?? [], allLocations)}
+        <Footer />
+      </>
+    );
+  }
+
+  return notFound();
 }
