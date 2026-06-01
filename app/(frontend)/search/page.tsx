@@ -1,6 +1,7 @@
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { getNavigation } from '@/lib/getNavigation'
+import { getFooter } from '@/lib/getFooter'
 import Navbar from '@/app/components/Navbar'
 import Footer from '@/app/components/Footer'
 import Image from 'next/image'
@@ -15,7 +16,7 @@ export default async function SearchPage({
 }) {
   const { q } = await searchParams
   const navData = await getNavigation()
-
+  const footerData = await getFooter();
   const searchQuery = q?.trim() || ''
   const payload = await getPayload({ config })
 
@@ -166,7 +167,8 @@ export default async function SearchPage({
         </div>
       </section>
 
-      <Footer  />
+      <Footer footerData={footerData} />
+      
     </>
   )
 }

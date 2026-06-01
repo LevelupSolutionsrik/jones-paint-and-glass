@@ -27,7 +27,7 @@ import RecommendBlog from "@/app/components/RecommendBlogs";
 import BlogSearch from "@/app/components/Blogsearch";
 import BlogDetail from "@/app/components/Blogdetail";
 import { getLocations } from "@/lib/getLocations";
-import Footer from "../components/Footer";
+import Footer from "@/app/components/Footer";
 
 export const dynamic = "force-dynamic";
 
