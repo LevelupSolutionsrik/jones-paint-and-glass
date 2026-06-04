@@ -5,8 +5,43 @@ import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+
 
 export const dynamic = 'force-dynamic';
+
+
+export const metadata: Metadata = {
+  title:
+    "Paint Products & Services in Utah | Interior, Exterior, Auto & More | Jones Paint & Glass",
+
+  description:
+    "Find interior paint, exterior paint, floor coatings, wood stains, auto paint, and more at Jones Paint & Glass — Utah's trusted paint store since 1938. Affordable prices, expert guidance. Visit a showroom today.",
+
+  alternates: {
+    canonical: "https://jonespg.com/paint/",
+  },
+
+  openGraph: {
+    title: "Paint Products & Services in Utah | Jones Paint & Glass",
+
+    description:
+      "Find interior paint, exterior paint, floor coatings, wood stains, auto paint, and more at Jones Paint & Glass — Utah's trusted paint store since 1938. Affordable prices, expert guidance. Visit a showroom today.",
+
+    url: "https://jonespg.com/paint/",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+
+    title: "Paint Products & Services in Utah | Jones Paint & Glass",
+
+    description:
+      "Find interior paint, exterior paint, floor coatings, wood stains, auto paint, and more at Jones Paint & Glass — Utah's trusted paint store since 1938. Affordable prices, expert guidance. Visit a showroom today.",
+  },
+};
 
 export default async function PaintPage() {
   const navData = await getNavigation();

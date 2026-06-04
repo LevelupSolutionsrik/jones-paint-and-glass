@@ -122,7 +122,7 @@ export default function ExteriorServices({
                     {p.title}
                   </h3>
                   {p.subtitle && (
-                    <p className="text-[#0052C6] text-[24px] leading-relaxed mb-4 w-[80%]">
+                    <p className=" text-[24px] leading-relaxed mb-4 w-[80%]">
                       {p.subtitle}
                     </p>
                   )}

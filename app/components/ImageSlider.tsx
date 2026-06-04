@@ -1,34 +1,35 @@
-'use client';
+"use client";
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
-import { useRef, useEffect, useState } from 'react';
-import type { Swiper as SwiperType } from 'swiper';
-import Image from 'next/image';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
+import { useRef, useEffect, useState } from "react";
+import type { Swiper as SwiperType } from "swiper";
+import Image from "next/image";
 
-import 'swiper/css';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/navigation";
+import Link from "next/dist/client/link";
 
 type Location = {
-  id?: string
-  name: string
-  slug?: string
+  id?: string;
+  name: string;
+  slug?: string;
   storeImage?: {
-    url?: string | null
-    alt?: string | null
-  } | null
-}
+    url?: string | null;
+    alt?: string | null;
+  } | null;
+};
 
 type ImageSliderBlockProps = {
-  heading?: string
-  description?: string
+  heading?: string;
+  description?: string;
   // ✅ locations passed from server component
-  fetchedLocations?: Location[]
-}
+  fetchedLocations?: Location[];
+};
 
 export default function ImageSlider({
-  heading = 'JP&G Locations',
-  description = 'We have stores scattered throughout Utah. Check out the products and information for the store nearest you!',
+  heading = "JP&G Locations",
+  description = "We have stores scattered throughout Utah. Check out the products and information for the store nearest you!",
   fetchedLocations = [],
 }: ImageSliderBlockProps) {
   const prevRef = useRef<HTMLButtonElement>(null);
@@ -51,16 +52,21 @@ export default function ImageSlider({
 
   const handleBeforeInit = (swiper: SwiperType) => {
     swiperRef.current = swiper;
-    if (typeof swiper.params.navigation === 'object' && swiper.params.navigation) {
+    if (
+      typeof swiper.params.navigation === "object" &&
+      swiper.params.navigation
+    ) {
       swiper.params.navigation.prevEl = prevRef.current;
       swiper.params.navigation.nextEl = nextRef.current;
     }
   };
 
   return (
-    <section className="mt-[-100px] pr-[10%] pt-40 pb-20 overflow-hidden bg-gradient-to-b from-[#0052C6] to-[#002559]" id='jp-slider'>
+    <section
+      className="mt-[-100px] pr-[10%] pt-40 pb-20 overflow-hidden bg-gradient-to-b from-[#0052C6] to-[#002559]"
+      id="jp-slider"
+    >
       <div className="grid grid-cols-12 items-end bg-white py-10 rounded-r-3xl gap-6">
-
         {/* LEFT SIDE */}
         <div className="col-span-12 lg:col-span-5 pl-6 lg:pl-10 pr-6 lg:pr-0">
           <h2 className="text-[28px] md:text-[34px] lg:text-[40px] font-bold text-black mb-4 leading-tight font-['Avenir']">
@@ -75,7 +81,11 @@ export default function ImageSlider({
               className="w-11 h-11 rounded-full bg-[#D9FDED] hover:bg-[#A5EBCD] flex items-center justify-center transition-colors cursor-pointer"
               aria-label="Previous slide"
             >
-              <svg className="w-8 h-8 stroke-black fill-none" strokeWidth={1.2} viewBox="0 0 24 24">
+              <svg
+                className="w-8 h-8 stroke-black fill-none"
+                strokeWidth={1.2}
+                viewBox="0 0 24 24"
+              >
                 <polyline points="15 18 9 12 15 6" />
               </svg>
             </button>
@@ -84,7 +94,11 @@ export default function ImageSlider({
               className="w-11 h-11 rounded-full bg-[#D9FDED] hover:bg-[#A5EBCD] flex items-center justify-center transition-colors cursor-pointer"
               aria-label="Next slide"
             >
-              <svg className="w-8 h-8 stroke-black fill-none" strokeWidth={1.2} viewBox="0 0 24 24">
+              <svg
+                className="w-8 h-8 stroke-black fill-none"
+                strokeWidth={1.2}
+                viewBox="0 0 24 24"
+              >
                 <polyline points="9 6 15 12 9 18" />
               </svg>
             </button>
@@ -95,7 +109,9 @@ export default function ImageSlider({
         <div className="col-span-12 lg:col-span-7 overflow-hidden">
           {isLoading ? (
             <div className="flex items-center justify-center h-[420px] bg-gray-100 rounded-xl">
-              <div className="animate-pulse text-gray-400">Loading locations...</div>
+              <div className="animate-pulse text-gray-400">
+                Loading locations...
+              </div>
             </div>
           ) : fetchedLocations.length > 0 ? (
             <Swiper
@@ -111,44 +127,45 @@ export default function ImageSlider({
                 1200: { slidesPerView: 2.5 },
                 1400: { slidesPerView: 3 },
               }}
-              autoplay={fetchedLocations.length > 1
-                ? { delay: 2500, disableOnInteraction: false }
-                : false
+              autoplay={
+                fetchedLocations.length > 1
+                  ? { delay: 2500, disableOnInteraction: false }
+                  : false
               }
             >
               {fetchedLocations.map((loc, index) => {
                 const imageUrl = loc.storeImage?.url?.trim()
                   ? loc.storeImage.url
-                  : '/assets/jt/default.jpg'
+                  : "/assets/jt/default.jpg";
 
                 return (
                   <SwiperSlide key={loc.id || index}>
-                    <div className="relative rounded-xl overflow-hidden border border-gray-100 bg-white">
-                      <div className="relative w-full h-[350px] md:h-[380px] lg:h-[420px]">
-                        <Image
-                          src={imageUrl}
-                          alt={loc.storeImage?.alt || loc.name}
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          className="object-cover"
-                          loading="lazy"
-                          quality={75}
-                        />
+                    <Link href={`/${loc.slug}`}>
+                      <div className="relative rounded-xl overflow-hidden border border-gray-100 bg-white">
+                        <div className="relative w-full h-[350px] md:h-[380px] lg:h-[420px]">
+                          <Image
+                            src={imageUrl}
+                            alt={loc.storeImage?.alt || loc.name}
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            className="object-cover"
+                            loading="lazy"
+                            quality={75}
+                          />
+                        </div>
+                        <div className="absolute bottom-0 left-0 right-0 bg-white/95 rounded-xl px-5 py-4 w-[90%] mx-auto mb-4 shadow-sm">
+                          <h3 className="font-bold text-gray-900 text-[20px] mb-1">
+                            {loc.name}
+                          </h3>
+
+                          <span className="text-[16px] text-gray-500 hover:text-gray-700 transition-colors">
+                            Store Info
+                          </span>
+                        </div>
                       </div>
-                      <div className="absolute bottom-0 left-0 right-0 bg-white/95 rounded-xl px-5 py-4 w-[90%] mx-auto mb-4 shadow-sm">
-                        <h3 className="font-bold text-gray-900 text-[20px] mb-1">
-                          {loc.name}
-                        </h3>
-                        
-                        <a  href={`/${loc.slug}`}
-                          className="text-[16px] text-gray-500 hover:text-gray-700 transition-colors"
-                        >
-                          Store Info
-                        </a>
-                      </div>
-                    </div>
+                    </Link>
                   </SwiperSlide>
-                )
+                );
               })}
             </Swiper>
           ) : (
@@ -159,5 +176,5 @@ export default function ImageSlider({
         </div>
       </div>
     </section>
-  )
+  );
 }
