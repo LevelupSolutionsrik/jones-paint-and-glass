@@ -5,8 +5,40 @@ import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title:
+    "Interior & Exterior Doors in Utah | Residential, Patio & Commercial | Jones Paint & Glass",
+
+  description:
+    "Jones Paint & Glass carries interior doors, exterior doors, patio doors, and commercial doors from Masonite, Andersen & Marvin. All styles and materials for Utah homes and businesses. Free on-site estimates available.",
+
+  alternates: {
+    canonical: "https://jonespg.com/doors/",
+  },
+
+  openGraph: {
+    title: "Interior & Exterior Doors in Utah | Jones Paint & Glass",
+
+    description:
+      "Jones Paint & Glass carries interior doors, exterior doors, patio doors, and commercial doors from Masonite, Andersen & Marvin. All styles and materials for Utah homes and businesses. Free on-site estimates available.",
+
+    url: "https://jonespg.com/doors/",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+
+    title: "Interior & Exterior Doors in Utah | Jones Paint & Glass",
+
+    description:
+      "Jones Paint & Glass carries interior doors, exterior doors, patio doors, and commercial doors from Masonite, Andersen & Marvin. All styles and materials for Utah homes and businesses. Free on-site estimates available.",
+  },
+};
 
 export default async function DoorsPage() {
   const navData = await getNavigation();

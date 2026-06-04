@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getLocations } from "@/lib/getLocations";
 import { getNavigation } from "@/lib/getNavigation";
 import { getFooter } from '@/lib/getFooter'
@@ -7,6 +8,30 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
+
+
+export const metadata: Metadata = {
+  title: "Jones Paint & Glass Locations | Utah Paint, Glass & Window Stores",
+  description:
+    "Find your nearest Jones Paint & Glass in Utah — 7 locations from Provo and American Fork to St. George, Cedar City, Roosevelt, and Vernal. Paint, glass, windows, doors, auto glass, and more.",
+  alternates: {
+    canonical: "https://jonespg.com/locations/",
+  },
+  openGraph: {
+    title: "Jones Paint & Glass Locations | 7 Utah Stores",
+    description:
+      "Find your nearest Jones Paint & Glass in Utah — 7 locations from Provo and American Fork to St. George, Cedar City, Roosevelt, and Vernal. Paint, glass, windows, doors, auto glass, and more.",
+    url: "https://jonespg.com/locations/",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Jones Paint & Glass Locations | 7 Utah Stores",
+    description:
+      "Find your nearest Jones Paint & Glass in Utah — 7 locations from Provo and American Fork to St. George, Cedar City, Roosevelt, and Vernal. Paint, glass, windows, doors, auto glass, and more.",
+  },
+};
+
 
 export default async function LocationsPage() {
   const navData = await getNavigation();

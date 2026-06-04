@@ -187,6 +187,7 @@ export default async function DynamicPage({
 }) {
   const navData = await getNavigation();
   const footerData = await getFooter();
+  
   const { slug: rawSlug } = await params;
   const slug = normalizeSlug(rawSlug);
 
