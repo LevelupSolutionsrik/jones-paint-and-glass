@@ -34,9 +34,9 @@ export default function SubHero({
         <div className="relative z-2 flex flex-wrap justify-center xl:justify-start gap-3">
               <a
                 href="/contact"
-                className="group inline-flex items-center gap-2 rounded-[8px] bg-[#A5EBCD] px-5 py-3 text-[16px] font-semibold text-black transition-colors"
+                className="group inline-flex items-center gap-2 rounded-[8px] bg-[#0052C6] px-5 py-3 text-[16px] font-semibold text-white transition-colors"
               >
-                Request a Free Estimate
+                
                 <svg
                   className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"
                   viewBox="0 0 24 24"

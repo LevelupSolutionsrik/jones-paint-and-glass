@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
 
   images: {
     remotePatterns: [
-      // Localhost — all possible Payload media paths
+      // Localhost
       {
         protocol: 'http',
         hostname: 'localhost',
@@ -37,7 +37,7 @@ const nextConfig: NextConfig = {
         port: '3000',
         pathname: '/api/media/file/**',
       },
-      // Production (Railway) — all possible Payload media paths
+      // Production (Railway)
       {
         protocol: 'https',
         hostname: getHostname(process.env.NEXT_PUBLIC_SERVER_URL),
@@ -53,9 +53,21 @@ const nextConfig: NextConfig = {
         hostname: getHostname(process.env.NEXT_PUBLIC_SERVER_URL),
         pathname: '/api/media/file/**',
       },
+      // Cloudinary
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
+        pathname: '/**',
+      },
+      // ✅ Instagram CDN domains
+      {
+        protocol: 'https',
+        hostname: '*.cdninstagram.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.fbcdn.net',
         pathname: '/**',
       },
     ],
