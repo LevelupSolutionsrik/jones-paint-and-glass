@@ -138,7 +138,7 @@ function Lightbox({ p, onClose }: { p: Product; onClose: () => void }) {
           {/* CTA row */}
           <div className="flex gap-3 mt-2">
             
-              href="#"
+            <a  href="#"
               className="flex-1 flex items-center justify-center gap-2 bg-[#0052C6] hover:bg-[#003fa0] text-white font-bold text-[15px] py-3 rounded-[10px] transition-colors"
             >
               Get a Quote
@@ -287,7 +287,7 @@ export default function ExteriorServices({
           )}
           {buttonText && (
             
-              href={buttonLink}
+            <a  href={buttonLink}
               className="group inline-flex items-center gap-2 bg-[#0052C6] hover:bg-[#003fa0] transition-colors text-white font-bold text-[16px] px-5 py-3 rounded-[8px]"
             >
               {buttonText}
