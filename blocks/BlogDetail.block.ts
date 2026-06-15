@@ -30,16 +30,6 @@ export const BlogDetail: Block = {
       label: 'Subheading',
       defaultValue: 'Jones Paint & Glass Blog',
     },
-    // ✅ Replace array with relationship
-    {
-      name: 'articles',
-      type: 'relationship',
-      relationTo: 'blogs' as any,
-      hasMany: true,
-      label: 'Select Articles',
-      admin: {
-        description: 'Select blogs to display as articles',
-      },
-    },
+    
   ],
 }
