@@ -49,7 +49,7 @@ function Lightbox({ p, onClose }: { p: Product; onClose: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
+      className="fixed inset-0 z-1000 flex items-center justify-center p-4 md:p-8"
       onClick={onClose}
     >
       {/* Backdrop */}
