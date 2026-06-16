@@ -8,7 +8,7 @@ export async function getLocations() {
       collection: 'locations' as any,
       limit: 100,
       sort: 'name',
-      depth: 2,
+      depth: 3,
     })
     return result.docs ?? []
   } catch (err) {

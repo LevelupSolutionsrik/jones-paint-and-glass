@@ -14,7 +14,7 @@ type Location = {
   id?: string;
   name: string;
   slug?: string;
-  storeImage?: {
+  locationImage?: {
     url?: string | null;
     alt?: string | null;
   } | null;
@@ -134,8 +134,8 @@ export default function ImageSlider({
               }
             >
               {fetchedLocations.map((loc, index) => {
-                const imageUrl = loc.storeImage?.url?.trim()
-                  ? loc.storeImage.url
+                const imageUrl = loc.locationImage?.url?.trim() 
+                  ? loc.locationImage.url
                   : "/assets/jt/default.jpg";
 
                 return (
@@ -145,7 +145,7 @@ export default function ImageSlider({
                         <div className="relative w-full h-[350px] md:h-[380px] lg:h-[420px]">
                           <Image
                             src={imageUrl}
-                            alt={loc.storeImage?.alt || loc.name}
+                            alt={loc.locationImage?.alt || loc.name}
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                             className="object-cover"
