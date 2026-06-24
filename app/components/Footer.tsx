@@ -13,7 +13,7 @@ export default function Footer({ footerData }: { footerData: any }) {
     { label: 'Careers', href: '/careers' },
   ]
 
-  const locations = footerData?.locations ?? []
+  // const locations = footerData?.locations ?? []
   const paintItems = footerData?.paintItems ?? []
   const glassItems = footerData?.glassItems ?? []
   const doorsItems = footerData?.doorsItems ?? []
@@ -32,13 +32,13 @@ export default function Footer({ footerData }: { footerData: any }) {
           
           <FooterColumn title="HOME" items={homeLinks} />
 
-          <FooterColumn
+          {/* <FooterColumn
             title="LOCATIONS"
             items={locations.map((item: any) => ({
               label: item.name,
               href: `/${item.slug}`,
             }))}
-          />
+          /> */}
 
           <FooterColumn
             title="GLASS"
