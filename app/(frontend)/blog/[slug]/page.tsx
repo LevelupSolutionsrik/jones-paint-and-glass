@@ -80,7 +80,7 @@ const footerData = await getFooter()
   }
 
   // Social share icons — reusable
-  const ShareIcons = () => (
+  const ShareIcons = () => ( 
     <div className="flex items-center gap-4">
       <a href="#" className="rounded flex items-center justify-center">
         <img src="/assets/jt/elements/share-icon.png" alt="share" />
@@ -88,14 +88,20 @@ const footerData = await getFooter()
       <a href="#" target="_blank" rel="noopener noreferrer" className="rounded flex items-center justify-center">
         <img src="/assets/jt/elements/linkedin-icon.png" alt="linkedin" />
       </a>
-      <a href="#" target="_blank" rel="noopener noreferrer" className="rounded flex items-center justify-center">
+      <a href="https://www.facebook.com/JonesPaintandGlass/" target="_blank" rel="noopener noreferrer" className="rounded flex items-center justify-center">
         <img src="/assets/jt/elements/facebook-icon.png" alt="facebook" />
       </a>
-      <a href="#" target="_blank" rel="noopener noreferrer" className="rounded flex items-center justify-center">
+      <a href="https://www.instagram.com/jonespaintandglass/" target="_blank" rel="noopener noreferrer" className="rounded flex items-center justify-center">
         <img src="/assets/jt/elements/instagram-icon.png" alt="instagram" />
       </a>
       <a href="#" target="_blank" rel="noopener noreferrer" className="rounded flex items-center justify-center">
         <img src="/assets/jt/elements/x-icon.png" alt="x/twitter" />
+      </a>
+      <a href="https://www.tiktok.com/@jonespaintandglass" target="_blank" rel="noopener noreferrer" className="rounded flex items-center justify-center">
+        <img src="/assets/jt/elements/tiktok.png" alt="tiktok" />
+      </a>
+      <a href="https://www.youtube.com/@JonesPaintGlassInc" target="_blank" rel="noopener noreferrer" className="rounded flex items-center justify-center">
+        <img src="/assets/jt/elements/youtube.png" alt="youtube" />
       </a>
     </div>
   )
@@ -123,10 +129,7 @@ const footerData = await getFooter()
             <div className="flex flex-col sm:flex-row items-center justify-between mb-8 space-y-8">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-8 h-8 text-black" viewBox="0 0 24 24" fill="none">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="1.5" />
-                  </svg>
+                  <img src="/assets/images/logo.png" alt="Jones paint and glass" className="w-8 h-8 rounded-full" />
                 </div>
                 <div>
                   <p className="text-[18px] font-semibold mb-1">
@@ -196,10 +199,7 @@ const footerData = await getFooter()
               {/* Bottom author */}
               <div className="flex items-center gap-3 pt-8 border-t-2 border-black">
                 <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-8 h-8 text-black" viewBox="0 0 24 24" fill="none">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="1.5" />
-                  </svg>
+                  <img src="/assets/images/logo.png" alt="Jones paint and glass" className="w-8 h-8 rounded-full" />
                 </div>
                 <div>
                   <p className="text-[18px] font-semibold mb-1">

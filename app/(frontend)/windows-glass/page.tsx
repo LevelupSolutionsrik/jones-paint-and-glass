@@ -19,7 +19,7 @@ export default async function GlassPage() {
 
       <section className="mt-20 py-14 md:py-20 bg-white">
         <div className="container mx-auto px-4 lg:px-6">
-          <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-end">
+          <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 ">
 
             {/* ── Left: heading + first paint item image ── */}
             <div className="w-full lg:w-[42%] flex-shrink-0 text-center lg:text-start">
@@ -30,27 +30,19 @@ export default async function GlassPage() {
                 Glass Products &amp; Services
               </h2>
               <p className="text-[24px] leading-relaxed mb-10 mx-auto lg:mx-0 max-w-md">
-                All the colors, styles, and stains you need, with tips from JP&amp;G pros.
+                All the windows, mirrors, auto, shower and custom you need, with tips from JP&G pros.
               </p>
 
               <div className="rounded-[16px] overflow-hidden w-full">
-                {glassItems[0]?.locationImage?.url ? (
+                
                   <Image
-                    src={glassItems[0].locationImage.url}
-                    alt={glassItems[0].locationImage.alt || glassItems[0].name}
-                    width={600}
-                    height={450}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <Image
-                    src="/assets/jt/jone-paint-link.png"
+                    src="/assets/jt/windows-glass.png"
                     alt="Glass Products"
                     width={600}
                     height={450}
                     className="w-full h-full object-cover"
                   />
-                )}
+                
               </div>
             </div>
 
